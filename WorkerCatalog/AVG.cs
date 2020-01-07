@@ -35,8 +35,8 @@ Where Worker.DateStartWork BETWEEN '"+dateTimePicker1.Value.ToShortDateString()+
         SqlConnection conn;
         private void AVG_Load(object sender, EventArgs e)
         {
-            auth = (Authorization)Application.OpenForms[0];
-            conn = auth.conn;
+            //auth = (Authorization)Application.OpenForms[0];
+          //  conn = auth.conn;
         }
         void ReplaceExcel(Excel._Application app, string Find, string Replace)
         {

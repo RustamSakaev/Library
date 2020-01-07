@@ -31,8 +31,8 @@ namespace WorkerCatalog
         Authorization auth;
         private void Filial_Load(object sender, EventArgs e)
         {
-            auth = (Authorization)Application.OpenForms[0];
-            conn = auth.conn;
+          //  auth = (Authorization)Application.OpenForms[0];
+          //  conn = auth.conn;
             dataGridView1.DataSource = Visualisation();
             dataGridView1.Columns[0].Visible = false;
 

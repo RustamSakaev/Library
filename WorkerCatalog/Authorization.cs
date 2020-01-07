@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace WorkerCatalog
 {
@@ -22,8 +23,8 @@ namespace WorkerCatalog
 
         }
         string login, password;
-        public SqlConnection conn;
-
+        //public SqlConnection conn;
+        public MySqlConnection conn;
         private void Authorization_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (conn != null)
@@ -32,13 +33,15 @@ namespace WorkerCatalog
 
         private void button1_Click(object sender, EventArgs e)
         {
-            login = textBox1.Text;
-            password = textBox2.Text;
+           // login = textBox1.Text;
+           // password = textBox2.Text;
             try
             {
 
-                string ConnectionString = @"Data Source=ADMIN\SQLEXPRESS;Initial Catalog=WorkerCatalog; User ID=" + login + ";Password=" + password + "";
-                conn = new SqlConnection(ConnectionString);
+                //string ConnectionString = @"Data Source=ADMIN\SQLEXPRESS;Initial Catalog=WorkerCatalog; User ID=" + login + ";Password=" + password + "";
+                string ConnectionString = @"server=127.0.0.1;user=root;database=libre;password=1596315963;";
+                 conn = new MySqlConnection(ConnectionString);
+                //conn = new SqlConnection(ConnectionString);
                 conn.Open();
                 Main main = new Main();
                 this.Visible = false;
