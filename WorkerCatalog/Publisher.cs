@@ -21,7 +21,7 @@ namespace WorkerCatalog
         Authorization auth;
         DataTable Visualisation()
         {
-            string query = "Select id_publisher, name From publisher where deleted='0'";
+            string query = "Select id_publisher, name as Наименование From publisher where deleted='0'";
             MySqlCommand command = new MySqlCommand(query, conn);
             MySqlDataAdapter dataadapter = new MySqlDataAdapter(command);            
             DataTable dt = new DataTable();
@@ -51,10 +51,7 @@ namespace WorkerCatalog
             }
         }
 
-        int ToInt(string value)
-        {
-            return Convert.ToInt32(value);
-        }
+       
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -114,7 +111,7 @@ namespace WorkerCatalog
                 else
                 {
                     
-                    string query = "Insert into libre.publisher values(uuid(),\"" + Name + "\",\"Admin\",\"2020-01-08\",\"Admin\",\"2020-01-08\",\"0\");";
+                    string query = "Insert into libre.publisher values(uuid(),\"" + Name + "\",'Admin',CURDATE(),'Admin',CURDATE(),'0');";
                     MySqlCommand command = new MySqlCommand(query, conn);                   
                     command.ExecuteNonQuery();
                     dataGridView1.DataSource = Visualisation();
