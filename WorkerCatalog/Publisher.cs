@@ -6,33 +6,33 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
 
 namespace WorkerCatalog
 {
-    public partial class Post : Form
+    public partial class Publisher : Form
     {
-        public Post()
+        public Publisher()
         {
             InitializeComponent();
         }
-        SqlConnection conn;
+        MySqlConnection conn;
+        Authorization auth;
         DataTable Visualisation()
         {
-            string query = "Select ID_Post, Name as Наименование From Post";
-            SqlCommand command = new SqlCommand(query, conn);
-            SqlDataAdapter dataadapter = new SqlDataAdapter(command);
-            SqlCommandBuilder CommandBuilder = new SqlCommandBuilder(dataadapter);
+            string query = "Select id_publisher, name From publisher where deleted='0'";
+            MySqlCommand command = new MySqlCommand(query, conn);
+            MySqlDataAdapter dataadapter = new MySqlDataAdapter(command);            
             DataTable dt = new DataTable();
             dataadapter.Fill(dt);
             return dt;
         }
-        Authorization auth;
+       
         private void Post_Load(object sender, EventArgs e)
         {
-           // auth = (Authorization)Application.OpenForms[0];
-           // conn = auth.conn;
+            auth = (Authorization)Application.OpenForms[0];
+            conn = auth.conn;
             dataGridView1.DataSource = Visualisation();
             dataGridView1.Columns[0].Visible = false;
         }
@@ -63,10 +63,9 @@ namespace WorkerCatalog
                 if (dataGridView1.RowCount != 0)
                 {
                     if (dataGridView1.SelectedRows.Count != 0)
-                    {
-                        string query = "DELETE FROM Post where ID_Post=" + ToInt(dataGridView1.CurrentRow.Cells[0].Value.ToString());
-                        SqlCommand command = conn.CreateCommand();
-                        command.CommandText = query;
+                    {                        
+                        string query = "UPDATE publisher SET deleted='1',editedBy='Admin', editDate=CURDATE() WHERE id_publisher=\"" + dataGridView1[0, RedIndex].Value.ToString() + "\"";
+                        MySqlCommand command = new MySqlCommand(query, conn);
                         command.ExecuteNonQuery();
                         dataGridView1.DataSource = Visualisation();
                         MessageBox.Show("Запись удалена!");
@@ -75,9 +74,8 @@ namespace WorkerCatalog
             }
             catch
             {
-                MessageBox.Show("Невозможно удалить,так как в таблице Сотрудники имеются связаннные записи!");
+                MessageBox.Show("Невозможно удалить,так как в таблице Книги имеются связаннные записи!");
             }
-            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -115,9 +113,9 @@ namespace WorkerCatalog
                 }
                 else
                 {
-                    string query = "Insert Into Post Values('" + Name + "')";
-                    SqlCommand command = conn.CreateCommand();
-                    command.CommandText = query;
+                    
+                    string query = "Insert into libre.publisher values(uuid(),\"" + Name + "\",\"Admin\",\"2020-01-08\",\"Admin\",\"2020-01-08\",\"0\");";
+                    MySqlCommand command = new MySqlCommand(query, conn);                   
                     command.ExecuteNonQuery();
                     dataGridView1.DataSource = Visualisation();
                     dataGridView1.CurrentCell = dataGridView1[1, dataGridView1.RowCount - 1];
@@ -134,10 +132,9 @@ namespace WorkerCatalog
         int RedIndex;
         private void button2_Click(object sender, EventArgs e)
         {
-            string query = "Select Name from Post where ID_Post=" + ToInt(dataGridView1.CurrentRow.Cells[0].Value.ToString());
-            SqlCommand command = new SqlCommand(query, conn);
-            SqlDataAdapter da = new SqlDataAdapter(command);
-            SqlCommandBuilder cb = new SqlCommandBuilder(da);
+            string query = "Select name from publisher where id_publisher=\"" + dataGridView1.CurrentRow.Cells[0].Value.ToString()+"\"";
+            MySqlCommand command = new MySqlCommand(query, conn);
+            MySqlDataAdapter da = new MySqlDataAdapter(command);          
             DataTable dt = new DataTable();
             da.Fill(dt);
             textBox2.Text = dt.Rows[0][0].ToString();
@@ -175,9 +172,9 @@ namespace WorkerCatalog
                 }
                 else
                 {
-                    string query = "UPDATE Post SET Name='" + Name + "' WHERE ID_Post=" + ToInt(dataGridView1[0, RedIndex].Value.ToString());
-                    SqlCommand command = conn.CreateCommand();
-                    command.CommandText = query;
+                    
+                    string query = "UPDATE publisher SET name='" + Name + "',editedBy='Admin', editDate=CURDATE() WHERE id_publisher=\"" + dataGridView1[0, RedIndex].Value.ToString()+"\"";
+                    MySqlCommand command = new MySqlCommand(query, conn);
                     command.ExecuteNonQuery();
                     dataGridView1.DataSource = Visualisation();
                     dataGridView1.CurrentCell = dataGridView1[1, RedIndex];
@@ -195,14 +192,14 @@ namespace WorkerCatalog
         {
             return Application.OpenForms.OfType<TForm>().Any();
         }
-        Worker worker;
+        Book book;
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (IsFormOpened<Worker>())
+            if (IsFormOpened<Book>())
             {
                 this.Close();
-                worker = (Worker)Application.OpenForms["Worker"];
-                worker.Focus();
+                book = (Book)Application.OpenForms["Book"];
+                book.Focus();
             }           
         }
     }

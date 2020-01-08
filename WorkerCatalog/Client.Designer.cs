@@ -1,6 +1,6 @@
 ﻿namespace WorkerCatalog
 {
-    partial class Worker
+    partial class Client
     {
         /// <summary>
         /// Required designer variable.

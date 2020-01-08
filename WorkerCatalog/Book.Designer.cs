@@ -1,6 +1,6 @@
 ﻿namespace WorkerCatalog
 {
-    partial class Filial
+    partial class Book
     {
         /// <summary>
         /// Required designer variable.

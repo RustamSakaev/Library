@@ -12,9 +12,9 @@ using MySql.Data.MySqlClient;
 
 namespace WorkerCatalog
 {
-    public partial class Worker : Form
+    public partial class Client : Form
     {
-        public Worker()
+        public Client()
         {
             InitializeComponent();
         }
@@ -223,17 +223,17 @@ namespace WorkerCatalog
         {
             return Application.OpenForms.OfType<TForm>().Any();
         }
-        Filial filial;
+        Book filial;
         private void button6_Click(object sender, EventArgs e)
         {
-            if (!IsFormOpened<Filial>())
+            if (!IsFormOpened<Book>())
             {
-                filial = new Filial();
+                filial = new Book();
                 filial.Show();
             }
             else
             {
-                filial = (Filial)Application.OpenForms["Filial"];
+                filial = (Book)Application.OpenForms["Filial"];
                 filial.Focus();
             }
             //Object sender1 = new object();
@@ -250,17 +250,17 @@ namespace WorkerCatalog
             throw new NotImplementedException();
         }
 
-        Post post;
+        Publisher post;
         private void button7_Click(object sender, EventArgs e)
         {
-            if (!IsFormOpened<Post>())
+            if (!IsFormOpened<Publisher>())
             {
-                post = new Post();
+                post = new Publisher();
                 post.Show();
             }
             else
             {
-                post = (Post)Application.OpenForms["Post"];
+                post = (Publisher)Application.OpenForms["Post"];
                 post.Focus();
             }
             post.dataGridView1.Click += (sender1, e1) =>
@@ -272,14 +272,14 @@ namespace WorkerCatalog
 
         private void button8_Click(object sender, EventArgs e)
         {
-            if (!IsFormOpened<Filial>())
+            if (!IsFormOpened<Book>())
             {
-                filial = new Filial();
+                filial = new Book();
                 filial.Show();
             }
             else
             {
-                filial = (Filial)Application.OpenForms["Filial"];
+                filial = (Book)Application.OpenForms["Filial"];
                 filial.Focus();
             }
             filial.dataGridView1.Click += (sender1, e1) =>
@@ -290,14 +290,14 @@ namespace WorkerCatalog
 
         private void button9_Click(object sender, EventArgs e)
         {
-            if (!IsFormOpened<Post>())
+            if (!IsFormOpened<Publisher>())
             {
-                post = new Post();
+                post = new Publisher();
                 post.Show();
             }
             else
             {
-                post = (Post)Application.OpenForms["Post"];
+                post = (Publisher)Application.OpenForms["Post"];
                 post.Focus();
             }
             post.dataGridView1.Click += (sender1, e1) =>

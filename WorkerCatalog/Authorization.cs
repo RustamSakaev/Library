@@ -39,7 +39,7 @@ namespace WorkerCatalog
             {
 
                 //string ConnectionString = @"Data Source=ADMIN\SQLEXPRESS;Initial Catalog=WorkerCatalog; User ID=" + login + ";Password=" + password + "";
-                string ConnectionString = @"server=127.0.0.1;user=root;database=libre;password=1596315963;";
+                string ConnectionString = @"server=127.0.0.1;user=root;database=libre;password=1596315963;OldGuids=True;";
                  conn = new MySqlConnection(ConnectionString);
                 //conn = new SqlConnection(ConnectionString);
                 conn.Open();

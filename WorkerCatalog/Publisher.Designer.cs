@@ -1,6 +1,6 @@
 ﻿namespace WorkerCatalog
 {
-    partial class Post
+    partial class Publisher
     {
         /// <summary>
         /// Required designer variable.
@@ -201,11 +201,11 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(160, 13);
+            this.label1.Size = new System.Drawing.Size(157, 13);
             this.label1.TabIndex = 7;
-            this.label1.Text = "Таблица \"Квалификация\"";
+            this.label1.Text = "Таблица \"Издательства\"";
             // 
-            // Post
+            // Publisher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -219,9 +219,9 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.Name = "Post";
+            this.Name = "Publisher";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Справочник \"Квалификация\"";
+            this.Text = "Справочник \"Издательства\"";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Post_FormClosing);
             this.Load += new System.EventHandler(this.Post_Load);
             this.groupBox2.ResumeLayout(false);
