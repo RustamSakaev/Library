@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using MySql.Data.MySqlClient;
 
@@ -25,8 +24,8 @@ namespace WorkerCatalog
         }
         DataTable Visualisation()
         {
-            string query = @"Select id_librarian, fio as ФИО                        
-                            from librarian";
+            string query = @"Select id_client, fio as ФИО, phoneNumber as Телефон                        
+                            from client where deleted=0";
             MySqlCommand command = new MySqlCommand(query, conn);           
             MySqlDataAdapter dataadapter = new MySqlDataAdapter(command);
             
@@ -67,8 +66,9 @@ namespace WorkerCatalog
             button3.Enabled = false;
             dataGridView1.Visible = false;
             groupBox1.Visible = true;
-            GetPost(comboBox2);
-            GetFilial(comboBox1);
+
+            //GetPost(comboBox2);
+            //GetFilial(comboBox1);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -110,62 +110,41 @@ namespace WorkerCatalog
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "" || textBox4.Text == "" || textBox5.Text == "")
-            //{
-            //    MessageBox.Show("Заполните все поля!");
-            //}
-            //else
-            //{
-            //    string Name = textBox1.Text;
-            //    Name = Name.Trim(new char[] { ' ' });
-            //    Name = Regex.Replace(Name, @"\s+", " ");
+            if (textBox1.Text == "" || textBox2.Text == "")
+            {
+                MessageBox.Show("Заполните все поля!");
+            }
+            else
+            {
+                string Name = textBox1.Text;
+                Name = Name.Trim(new char[] { ' ' });
+                Name = Regex.Replace(Name, @"\s+", " ");
 
-            //    string Series = textBox2.Text;
-            //    Series = Series.Trim(new char[] { ' ' });
-            //    Series = Regex.Replace(Series, @"\s+", " ");
+                string Phone = textBox2.Text;
+                Phone = Phone.Trim(new char[] { ' ' });
+                Phone = Regex.Replace(Phone, @"\s+", " ");            
 
-            //    string Number = textBox3.Text;
-            //    Number = Number.Trim(new char[] { ' ' });
-            //    Number = Regex.Replace(Number, @"\s+", " ");
-
-            //    string Whog = textBox4.Text;
-            //    Whog = Whog.Trim(new char[] { ' ' });
-            //    Whog = Regex.Replace(Whog, @"\s+", " ");
-
-            //    string ZP = textBox5.Text;
-            //    ZP = ZP.Trim(new char[] { ' ' });
-            //    ZP = Regex.Replace(ZP, @"\s+", " ");
-
-            //    DateTime whenG = dateTimePicker1.Value;
-            //    DateTime WorkStart = dateTimePicker2.Value;
-
-            //    if (Name.Length == 0 || Series.Length == 0 || Number.Length == 0|| Whog.Length == 0|| ZP.Length == 0)
-            //    {
-            //        MessageBox.Show("Заполните все поля!");
-            //    }
-            //    else
-            //    {
-            //        string query = "Insert Into Worker Values('" + Name + "','"+Series+"','"+Number+"','"+Whog+"','"+whenG.ToShortDateString()+"','"+ZP+"','"+WorkStart.ToShortDateString()+"','"+comboBox1.SelectedValue+"','"+comboBox2.SelectedValue+"')";
-            //        SqlCommand command = conn.CreateCommand();
-            //        command.CommandText = query;
-            //        command.ExecuteNonQuery();
-            //        dataGridView1.DataSource = Visualisation();
-            //        dataGridView1.CurrentCell = dataGridView1[1, dataGridView1.RowCount - 1];
-            //        dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
-            //        button1.Enabled = !false;
-            //        button2.Enabled = !false;
-            //        button3.Enabled = !false;
-            //        dataGridView1.Visible = !false;
-            //        groupBox1.Visible = !true;
-            //        textBox1.Text = "";
-            //        textBox2.Text = "";
-            //        textBox3.Text = "";
-            //        textBox4.Text = "";
-            //        textBox5.Text = "";
-            //        dateTimePicker1.Value = DateTime.Now;
-            //        dateTimePicker2.Value = DateTime.Now;
-            //    }
-            //}
+                if (Name.Length == 0 || Phone.Length == 0 )
+                {
+                    MessageBox.Show("Заполните все поля!");
+                }
+                else
+                {
+                    string query = "Insert into libre.client values(uuid(),'" + Name + "','"+Phone+"','1','Admin',CURDATE(),'Admin',CURDATE(),'0');";
+                    MySqlCommand command = new MySqlCommand(query, conn);                                      
+                    command.ExecuteNonQuery();
+                    dataGridView1.DataSource = Visualisation();
+                    dataGridView1.CurrentCell = dataGridView1[1, dataGridView1.RowCount - 1];
+                    dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
+                    button1.Enabled = !false;
+                    button2.Enabled = !false;
+                    button3.Enabled = !false;
+                    dataGridView1.Visible = !false;
+                    groupBox1.Visible = !true;
+                    textBox1.Text = "";
+                    textBox2.Text = "";                   
+                }
+            }
         }
         int RedIndex;
         private void button2_Click(object sender, EventArgs e)
@@ -208,104 +187,14 @@ namespace WorkerCatalog
             dataGridView1.Visible = !false;
             groupBox2.Visible = !true;
             textBox1.Text = "";
-            textBox2.Text = "";
-            textBox3.Text = "";
-            textBox4.Text = "";
-            textBox5.Text = "";
-            dateTimePicker1.Value = DateTime.Now;
-            dateTimePicker2.Value = DateTime.Now;
-            comboBox3.SelectedIndex = -1;
-            comboBox4.SelectedIndex = -1;
-
+            textBox2.Text = "";          
         }
 
         bool IsFormOpened<TForm>() where TForm : Form
         {
             return Application.OpenForms.OfType<TForm>().Any();
         }
-        Book filial;
-        private void button6_Click(object sender, EventArgs e)
-        {
-            if (!IsFormOpened<Book>())
-            {
-                filial = new Book();
-                filial.Show();
-            }
-            else
-            {
-                filial = (Book)Application.OpenForms["Filial"];
-                filial.Focus();
-            }
-            //Object sender1 = new object();
-            //Object e1 = new object();
-            filial.dataGridView1.Click += (sender1, e1) =>
-            {
-                this.comboBox1.SelectedValue = filial.dataGridView1.CurrentRow.Cells[0].Value;
-            };
-
-        }
-
-        private void DataGridView1_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        Publisher post;
-        private void button7_Click(object sender, EventArgs e)
-        {
-            if (!IsFormOpened<Publisher>())
-            {
-                post = new Publisher();
-                post.Show();
-            }
-            else
-            {
-                post = (Publisher)Application.OpenForms["Post"];
-                post.Focus();
-            }
-            post.dataGridView1.Click += (sender1, e1) =>
-            {
-                this.comboBox2.SelectedValue = post.dataGridView1.CurrentRow.Cells[0].Value;
-            };
-
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            if (!IsFormOpened<Book>())
-            {
-                filial = new Book();
-                filial.Show();
-            }
-            else
-            {
-                filial = (Book)Application.OpenForms["Filial"];
-                filial.Focus();
-            }
-            filial.dataGridView1.Click += (sender1, e1) =>
-            {
-                this.comboBox3.SelectedValue = filial.dataGridView1.CurrentRow.Cells[0].Value;
-            };
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            if (!IsFormOpened<Publisher>())
-            {
-                post = new Publisher();
-                post.Show();
-            }
-            else
-            {
-                post = (Publisher)Application.OpenForms["Post"];
-                post.Focus();
-            }
-            post.dataGridView1.Click += (sender1, e1) =>
-            {
-                this.comboBox4.SelectedValue = post.dataGridView1.CurrentRow.Cells[0].Value;
-            };
-        }
-
+         
         private void button10_Click(object sender, EventArgs e)
         {
             //if (textBox6.Text == "" || textBox7.Text == "" || textBox8.Text == "" || textBox9.Text == "" || textBox10.Text == "")
@@ -365,6 +254,11 @@ namespace WorkerCatalog
             //        dateTimePicker2.Value = DateTime.Now;
             //    }
             //}
+        }
+
+        private void label18_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
