@@ -33,13 +33,12 @@ namespace WorkerCatalog
 
         private void button1_Click(object sender, EventArgs e)
         {
-           // login = textBox1.Text;
-           // password = textBox2.Text;
+           login = textBox1.Text;
+           password = textBox2.Text;
             try
             {
-
                 //string ConnectionString = @"Data Source=ADMIN\SQLEXPRESS;Initial Catalog=WorkerCatalog; User ID=" + login + ";Password=" + password + "";
-                string ConnectionString = @"server=127.0.0.1;user=root;database=libre;password=1596315963;OldGuids=True;";
+                string ConnectionString = @"server=127.0.0.1;user="+login+";database=libre;password="+password+";OldGuids=True;";
                  conn = new MySqlConnection(ConnectionString);
                 //conn = new SqlConnection(ConnectionString);
                 conn.Open();
