@@ -93,10 +93,7 @@ namespace WorkerCatalog
                 e.Cancel = true;
             }
         }
-       int ToInt(string value)
-        {
-            return Convert.ToInt32(value);
-        }
+       
         private void button3_Click(object sender, EventArgs e)
         {
             try
@@ -105,7 +102,7 @@ namespace WorkerCatalog
                 {
                     if (dataGridView1.SelectedRows.Count != 0)
                     {
-                        string query = "UPDATE book SET deleted='1',editedBy='Admin', editDate=CURDATE() WHERE id_book=\"" + dataGridView1[0, RedIndex].Value.ToString() + "\"";
+                        string query = "UPDATE book SET deleted='1',editedBy='Admin', editDate=CURDATE() WHERE id_book=\"" + dataGridView1[0, dataGridView1.CurrentRow.Index].Value.ToString() + "\"";
                         MySqlCommand command = new MySqlCommand(query, conn);
                         command.ExecuteNonQuery();
                         dataGridView1.DataSource = Visualisation();
@@ -156,6 +153,7 @@ namespace WorkerCatalog
             }
 
         }
+
         int RedIndex;
         private void button2_Click(object sender, EventArgs e)
         {
@@ -216,14 +214,14 @@ namespace WorkerCatalog
         {
             return Application.OpenForms.OfType<TForm>().Any();
         }
-        Client worker;
+        Main main;
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (IsFormOpened<Client>())
+            if (IsFormOpened<Main>())
             {
                 this.Close();
-                worker = (Client)Application.OpenForms["Worker"];
-                worker.Focus();
+                main = (Main)Application.OpenForms["Main"];
+                main.Focus();
             }
         }
         Publisher publisher;

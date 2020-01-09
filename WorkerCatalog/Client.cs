@@ -48,7 +48,7 @@ namespace WorkerCatalog
                 {
                     if (dataGridView1.SelectedRows.Count != 0)
                     {
-                        string query = "UPDATE client SET deleted='1',editedBy='Admin', editDate=CURDATE() WHERE id_client=\"" + dataGridView1[0, RedIndex].Value.ToString() + "\"";
+                        string query = "UPDATE client SET deleted='1',editedBy='Admin', editDate=CURDATE() WHERE id_client=\"" + dataGridView1[0, dataGridView1.CurrentRow.Index].Value.ToString() + "\"";
                         MySqlCommand command = new MySqlCommand(query, conn);
                         command.ExecuteNonQuery();
                         dataGridView1.DataSource = Visualisation();
@@ -200,6 +200,21 @@ namespace WorkerCatalog
         private void label18_Click(object sender, EventArgs e)
         {
 
+        }
+        Main main;
+        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+        }
+
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (IsFormOpened<Main>())
+            {
+                this.Close();
+                main = (Main)Application.OpenForms["Main"];
+                main.Focus();
+            }
         }
     }
 }

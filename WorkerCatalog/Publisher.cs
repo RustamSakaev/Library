@@ -61,7 +61,7 @@ namespace WorkerCatalog
                 {
                     if (dataGridView1.SelectedRows.Count != 0)
                     {                        
-                        string query = "UPDATE publisher SET deleted='1',editedBy='Admin', editDate=CURDATE() WHERE id_publisher=\"" + dataGridView1[0, RedIndex].Value.ToString() + "\"";
+                        string query = "UPDATE publisher SET deleted='1',editedBy='Admin', editDate=CURDATE() WHERE id_publisher=\"" + dataGridView1[0, dataGridView1.CurrentRow.Index].Value.ToString() + "\"";
                         MySqlCommand command = new MySqlCommand(query, conn);
                         command.ExecuteNonQuery();
                         dataGridView1.DataSource = Visualisation();
