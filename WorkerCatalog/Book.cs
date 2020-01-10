@@ -22,7 +22,7 @@ namespace WorkerCatalog
         {
             string query = @"Select id_book, book.name as Наименование, quantity as Колво, publisher.name as Издательство
                                 From book, publisher
-                               WHERE book.publisher_id=publisher.id_publisher and book.deleted='0'";
+                               WHERE book.publisher_id=publisher.id_publisher and book.deleted='0' and filial=" + auth.Filial;
             MySqlCommand command = new MySqlCommand(query, conn);
             MySqlDataAdapter dataadapter = new MySqlDataAdapter(command);
             
@@ -31,10 +31,12 @@ namespace WorkerCatalog
             return dt;
         }
         Authorization auth;
+        int Filial;
         private void Filial_Load(object sender, EventArgs e)
         {
             auth = (Authorization)Application.OpenForms[0];
             conn = auth.conn;
+            Filial = auth.Filial;
             dataGridView1.DataSource = Visualisation();
             dataGridView1.Columns[0].Visible = false;
 
@@ -137,7 +139,7 @@ namespace WorkerCatalog
                 }
                 else
                 {
-                    string query = "Insert Into book Values(uuid(),'"+Name+"','"+quantity+"','"+comboBox3.SelectedValue+ "','1','Admin',CURDATE(),'Admin',CURDATE(),'0')";
+                    string query = "Insert Into book Values(uuid(),'"+Name+"','"+quantity+"','"+comboBox3.SelectedValue+ "',"+Filial+",'Admin',CURDATE(),'Admin',CURDATE(),'0')";
                     MySqlCommand command = new MySqlCommand(query, conn);
                     command.ExecuteNonQuery();
                     dataGridView1.DataSource = Visualisation();

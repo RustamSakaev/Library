@@ -22,7 +22,7 @@ namespace WorkerCatalog
         DataTable Visualisation()
         {
             string query = @"Select id_client, fio as ФИО, phoneNumber as Телефон                        
-                            from client where deleted=0";
+                            from client where deleted=0 and filial="+Filial;
             MySqlCommand command = new MySqlCommand(query, conn);           
             MySqlDataAdapter dataadapter = new MySqlDataAdapter(command);
             
@@ -32,10 +32,12 @@ namespace WorkerCatalog
         }
         Authorization auth;
         MySqlConnection conn;
+        int Filial;
         private void Worker_Load(object sender, EventArgs e)
         {
             auth = (Authorization)Application.OpenForms[0];
             conn = auth.conn;
+            Filial = auth.Filial;
             dataGridView1.DataSource = Visualisation();
             dataGridView1.Columns[0].Visible = false;
         }
@@ -103,7 +105,7 @@ namespace WorkerCatalog
                 }
                 else
                 {
-                    string query = "Insert into libre.client values(uuid(),'" + Name + "','"+Phone+"','1','Admin',CURDATE(),'Admin',CURDATE(),'0');";
+                    string query = "Insert into libre.client values(uuid(),'" + Name + "','"+Phone+"',"+Filial+",'Admin',CURDATE(),'Admin',CURDATE(),'0');";
                     MySqlCommand command = new MySqlCommand(query, conn);                                      
                     command.ExecuteNonQuery();
                     dataGridView1.DataSource = Visualisation();

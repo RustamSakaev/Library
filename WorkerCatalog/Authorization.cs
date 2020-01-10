@@ -23,30 +23,38 @@ namespace WorkerCatalog
 
         }
         string login, password;
-        //public SqlConnection conn;
+        public int Filial;
         public MySqlConnection conn;
         private void Authorization_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (conn != null)
                 conn.Close();
         }
+       
 
         private void button1_Click(object sender, EventArgs e)
         {
            login = textBox1.Text;
            password = textBox2.Text;
             try
-            {
-                //string ConnectionString = @"Data Source=ADMIN\SQLEXPRESS;Initial Catalog=WorkerCatalog; User ID=" + login + ";Password=" + password + "";
+            {                
                 string ConnectionString = @"server=127.0.0.1;user="+login+";database=libre;password="+password+";OldGuids=True;";
-                 conn = new MySqlConnection(ConnectionString);
-                //conn = new SqlConnection(ConnectionString);
+                conn = new MySqlConnection(ConnectionString);               
                 conn.Open();
+
+                string query = "Select filial From librarian where login='" + login + "'";
+                MySqlCommand command = new MySqlCommand(query, conn);
+                MySqlDataAdapter dataadapter = new MySqlDataAdapter(command);
+                DataTable dt = new DataTable();
+                dataadapter.Fill(dt);
+                Filial = Convert.ToInt32(dt.Rows[0][0]);
+
                 Main main = new Main();
                 this.Visible = false;
                 main.Show();
                 textBox1.Text = "";
                 textBox2.Text = "";
+                                      
             }
             catch
             {

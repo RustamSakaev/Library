@@ -62,7 +62,7 @@ namespace WorkerCatalog
         {
             string query = @"Select id_journal, dateOfIssue as Дата_выдачи, returnDatePlan as Дата_возврата_п, returnDateFact as Дата_возврата_ф, book.name as Книга, client.fio as Клиент,librarian.fio as Библиотекарь, article as Артикул
                                 from journal, client, book, librarian
-                                where journal.client_id=client.id_client and journal.book_id=book.id_book and journal.librarian_id=librarian.id_librarian and journal.deleted=0";
+                                where journal.client_id=client.id_client and journal.book_id=book.id_book and journal.librarian_id=librarian.id_librarian and journal.deleted=0 and journal.filial="+Filial;
             MySqlCommand command = new MySqlCommand(query, conn);
             MySqlDataAdapter dataadapter = new MySqlDataAdapter(command);           
             DataTable dt = new DataTable();
@@ -70,10 +70,12 @@ namespace WorkerCatalog
             return dt;
         }
         MySqlConnection conn;
+        int Filial;
         private void Main_Load(object sender, EventArgs e)
         {
             auth = (Authorization)Application.OpenForms[0];
             conn = auth.conn;
+            Filial = auth.Filial;
             dataGridView1.DataSource = Visualisation();
             dataGridView1.Columns[0].Visible = false;
         }
@@ -127,7 +129,7 @@ namespace WorkerCatalog
         }
         void GetBook(ComboBox cmb)
         {
-            string query = "Select id_book, name From book where deleted='0'";
+            string query = "Select id_book, name From book where deleted='0' and filial=" + Filial;
             MySqlCommand command = new MySqlCommand(query, conn);
             MySqlDataAdapter dataadapter = new MySqlDataAdapter(command);
             DataTable dt = new DataTable();
@@ -138,7 +140,7 @@ namespace WorkerCatalog
         }
         void GetClient(ComboBox cmb)
         {
-            string query = "Select id_client, fio From client where deleted='0'";
+            string query = "Select id_client, fio From client where deleted='0' and filial=" + Filial;
             MySqlCommand command = new MySqlCommand(query, conn);
             MySqlDataAdapter dataadapter = new MySqlDataAdapter(command);
             DataTable dt = new DataTable();
@@ -237,9 +239,9 @@ namespace WorkerCatalog
                     
                     string query;
                     if (checkBox1.Checked == true)
-                        query = "Insert Into journal Values(uuid(),'" + date11 + "','" + date22 + "',NULL,'1','" + comboBox4.SelectedValue + "','" + comboBox3.SelectedValue + "',1,'Admin',CURDATE(),'Admin',CURDATE(),'0','"+ Article + "')";
+                        query = "Insert Into journal Values(uuid(),'" + date11 + "','" + date22 + "',NULL,"+Filial+",'" + comboBox4.SelectedValue + "','" + comboBox3.SelectedValue + "',1,'Admin',CURDATE(),'Admin',CURDATE(),'0','"+ Article + "')";
                     else
-                        query = "Insert Into journal Values(uuid(),'" + date11 + "','" + date22 + "','"+date33+"','1','" + comboBox4.SelectedValue + "','" + comboBox3.SelectedValue + "',1,'Admin',CURDATE(),'Admin',CURDATE(),'0','" + Article + "')";
+                        query = "Insert Into journal Values(uuid(),'" + date11 + "','" + date22 + "','"+date33+"',"+Filial+",'" + comboBox4.SelectedValue + "','" + comboBox3.SelectedValue + "',1,'Admin',CURDATE(),'Admin',CURDATE(),'0','" + Article + "')";
                     MySqlCommand command = new MySqlCommand(query, conn);
                     command.ExecuteNonQuery();
                     dataGridView1.DataSource = Visualisation();
